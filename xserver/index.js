@@ -23,7 +23,6 @@ app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/', express.static(path.join(__dirname, '../public')))
-app.use('/uploads/images', express.static(path.join('uploads','images')))
 
 const isDev = (app.get('env') === 'development');
 console.log('isDev: ' + isDev);
@@ -70,13 +69,13 @@ process.on('uncaughtException', function (er) {
  ///////////////////////////////////////////////
  const about =       express.Router()
  const header =      express.Router() 
- const auth =        express.Router({mergeParams: true}) 
  const speed =       express.Router({mergeParams: true}) 
  const test =        express.Router({mergeParams: true})
 
+ const userRoutes = require('../routes/auth')
+
  require('../routes/about')(about)
  require('../routes/header')(header)
- require('../routes/auth')(auth)
  require('../routes/speed')(speed)
  require('../routes/test')(test)
 
@@ -91,7 +90,7 @@ app.get('/about', about)
 //////////       api routes - streaming       /////////
 //////////////////////////////////////////////////////
 
-app.use("/api/auth", [auth])
+app.use("/api/auth", [userRoutes])
 
 app.use('/api/speed', [speed])
 
