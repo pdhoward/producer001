@@ -69,14 +69,14 @@ process.on('uncaughtException', function (er) {
  ///////////////////////////////////////////////
  const about =       express.Router()
  const header =      express.Router() 
- const speed =       express.Router({mergeParams: true}) 
+ const signal =       express.Router({mergeParams: true}) 
  const test =        express.Router({mergeParams: true})
 
  const userRoutes = require('../routes/auth')
 
  require('../routes/about')(about)
  require('../routes/header')(header)
- require('../routes/speed')(speed)
+ require('../routes/signal')(signal)
  require('../routes/test')(test)
 
 ///////////////////////////////////////////////////////////////
@@ -92,7 +92,7 @@ app.get('/about', about)
 
 app.use("/api/auth", [userRoutes])
 
-app.use('/api/speed', [speed])
+app.use('/api/signal', [signal])
 
 ///////////////////////////////////
 ///////     active servers ///////

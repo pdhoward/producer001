@@ -72,32 +72,55 @@ const findActiveTags = (parm) => {
     })
 }
 
+// select a sample of stores
+const fetchStoreSample = ( ) => {
+    return new Promise(async (resolve, reject) => {  
+        const db = await conn(proximityurl, proximityDb)      
+
+        db.collection('venues')
+            .find({market: {$in: ['Grocery Stores', 'Supermarkets']}})
+            .toArray()
+            .then(data => {
+              let newarray = data.map(d => d.marketid)
+              resolve(newarray) 
+            })  
+    })
+}
+
+// select a sample of product tags
+const fetchTagSample = () => {
+    return new Promise(async (resolve, reject) => {  
+        const db = await conn(proximityurl, proximityDb)      
+
+        db.collection('tags')
+        .aggregate([{$sample: {size: 1000}}])
+        .toArray()
+        .then(data => {      
+         resolve(data)
+        })
+    })
+}
+
+// select a sample of product tags
+const fetchSubscribers = () => {
+    return new Promise(async (resolve, reject) => {  
+        const db = await conn(proximityurl, proximityDb)      
+
+        db.collection('subscribers')
+        .aggregate([{$sample: {size: 5000}}])
+        .toArray()
+        .then(data => {      
+          resolve(data)
+        })
+    })
+}
+
 module.exports = {    
     findVenue,
     findSubscriberAndUpdate,
-    findActiveTags
+    findActiveTags,
+    fetchStoreSample,
+    fetchTagSample,
+    fetchSubscribers
 }
 
-////
-//////////////////////////////////////////
-
-// const init = async() => {
-//   // select all grocery stores and super markets
-//   await dbProximity.db('proximity').collection('venues')
-//     .find({market: {$in: ['Grocery Stores', 'Supermarkets']}})
-//     .toArray()
-//     .then(data => {
-//       let newarray = data.map(d => d.marketid)
-//       venuearray = [...newarray]   
-//     })  
-// }
-
-// if (dbProximity.isConnected()) {
-//   console.log(g(`DB Ready`))
-//   init();
-// } else {
-//   dbProximity.connect().then(function () {
-//     console.log(g(`Reconnect to DB`))
-//     init();
-//   });
-// }
