@@ -75,7 +75,7 @@ const onMessage = (evt) => {
         obj.name = a.name 
         obj.price = a.price 
         obj.seq = a.seq
-        obj.date = new Date(a.updatedOn)
+        obj.date = new Date(a.updatedOn).toLocaleString()
         return obj
     })
     messages.forEach(addMessage);
