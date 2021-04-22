@@ -1,5 +1,5 @@
 const jwtDecode = 			require('jwt-decode')
-const conn =                require('../db/connections')
+const {conn} =                require('../db')
 const userSchema = 	  		require('../models/User.js')
 const signToken = 			require('../auth').signToken
 const signSimpleToken = 	require('../auth').signSimpleToken
@@ -30,6 +30,10 @@ exports.auth = {
 		
 		let joke = jokes[Math.floor(Math.random() * jokes.length)]
 		// note we execute .lean() to convert a mongoose document to js doc
+		let url = process.env.ATLAS_AUTH
+		let db = await conn(url)
+		let User = db.model('User', userSchema)
+
 		let doc = await User.find({email: userProfile.email}).lean()		
 		if (doc.length === 0 || err) {
 			doc = []
