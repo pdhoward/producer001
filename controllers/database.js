@@ -62,7 +62,7 @@ const fetchTagSample = () => {
         let db = await conn(url)		
 		let Tag = db.model('Tag', tagSchema)     
 
-        let data = await Tag.aggregate([{$sample: {size: 1000}}]).lean()
+        let data = await Tag.aggregate([{$sample: {size: 1000}}])
         resolve(data)
     })
 }
@@ -73,8 +73,7 @@ const fetchSubscribers = () => {
         let db = await conn(url)		
 		let Subscriber = db.model('Subscriber', subscriberSchema)  
 
-        let data = await Subscriber.collection('subscribers')
-        .aggregate([{$sample: {size: 5000}}]).lean()
+        let data = await Subscriber.aggregate([{$sample: {size: 5000}}])
         resolve(data)
     })
 }
