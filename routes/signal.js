@@ -1,11 +1,12 @@
 
 const {fetchStoreSample, 
        fetchTagSample, 
-       fetchSubscribers} =  require('../db')
+       fetchSubscribers} =  require('../controllers')
 const {wss} =               require('../events')
 const produce =             require('../controllers')
 const { g, b, gr, r, y } =  require('../console')
 
+console.log(typeof fetchStoreSample)
 // select all grocery stores and super markets
 let venuearray = fetchStoreSample()
 let tagarray = fetchTagSample()
