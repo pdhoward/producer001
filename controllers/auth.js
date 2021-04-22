@@ -1,5 +1,5 @@
 const jwtDecode = 			require('jwt-decode')
-const {conn} =                require('../db')
+const {conn} =              require('../db')
 const userSchema = 	  		require('../models/User.js')
 const signToken = 			require('../auth').signToken
 const signSimpleToken = 	require('../auth').signSimpleToken

@@ -92,7 +92,7 @@ app.get('/about', about)
 
 app.use("/api/auth", [userRoutes])
 
-app.use('/api/signal', [signal])
+app.use('/api/signals', [signal])
 
 ///////////////////////////////////
 ///////     active servers ///////

@@ -40,7 +40,7 @@ module.exports = (url, dbName) => {
         resolve(conn)                 
       }
       else {
-        log.info('creating new connection for ' + api);
+        log.info('Creating new connection for ' + api);
        
         const conn = await mongoose.createConnection(api, dbOptions)
         await cache.set(api, conn) 

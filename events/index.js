@@ -21,14 +21,14 @@ wss.on("connection", (socket, req) => {
     console.info("Total connected clients:", wss.clients.size);
 })
 
-const producer = () => {
+const kafkaproducer = () => {
   return new Promise(async (resolve, reject) => {
     let {producer} = await kafka()
-    resolve({producer}) 
+    resolve(producer) 
   })  
 }
 
 module.exports = {
       wss,    
-      producer
+      kafkaproducer
     }
