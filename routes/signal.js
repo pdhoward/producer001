@@ -45,10 +45,22 @@ module.exports = signal = (router) => {
         let venue = venuearray[Math.floor(Math.random() * venuearray.length)]
         let tag = tagarray[Math.floor(Math.random() * tagarray.length)]
         let subscriber = subscriberarray[Math.floor(Math.random() * subscriberarray.length)]       
-                 
+        
+        // attach a random price to the object
+        x++
+        tag.price = Math.floor(Math.random() * (1000 - 100) + 100) / 100;
+        tag.seq = x
+        
+        // sockets
+        wss.clients.forEach((client) => {
+          if (client.readyState === 1) {
+              client.send(JSON.stringify([tag]))
+          }
+        });
+
+        // kafka producer - 
         try {
-          let result = await kafka(producer, tag)
-          x++
+          let result = await kafka(producer, tag)          
           console.log(result, x)
         } catch (e) {
           console.log(e)
