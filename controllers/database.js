@@ -8,11 +8,7 @@ const { g, b, gr, r, y } =  require('../console')
 ////   constants              ////
 /////////////////////////////////
 
-const proximityurl = process.env.ATLAS_PROXIMITY_URI
-const proximityDb = process.env.ATLAS_PROXIMITY_DB
-const proximityVenues = process.env.ATLAS_PROXIMITY_MARKETS
-const proximitySubscribers = process.env.ATLAS_PROXIMITY_SUBSCRIBERS
-const proximityTags = process.env.ATLAS_PROXIMITY_TAGS
+const url = process.env.ATLAS_PROXIMITY_URI
 
 /**
  * Search the database for a venue
@@ -20,107 +16,72 @@ const proximityTags = process.env.ATLAS_PROXIMITY_TAGS
  */
 
 const findVenue = (venue) => {
-    return new Promise(async (resolve, reject) => {
-        const db = await conn(proximityurl, proximityDb)
-        
-        let token = 'unknown'
-        // find mac and validate against registered venue device
-        // returns an empty array if venue not in db
-        if (venue){token = venue[0].mac}   
-        db.collection(proximityVenues)
-            .find({monitors: token })                     
-            .toArray()
-            .then((result) => {  
-                if (result.length > 0) delete result[0].monitors
-                resolve(result)
-            })
-            .catch(err => reject(err))        
+    return new Promise(async (resolve, reject) => {      
+		let db = await conn(url)		
+		let Venue = db.model('Venue', venueSchema)
+        let token = venue       
+        let doc = await Venue.findOne({monitors: token }).lean()                   
+        resolve(doc)      
     })
 }
 
 const findSubscriberAndUpdate = (signal, venue) => {
     return new Promise(async (resolve, reject) => {  
-        const db = await conn(authUri, authDb)
+        let db = await conn(url)		
+		let Subscriber = db.model('Subscriber', subscriberSchema)
         let signalUUID = signal.ibeaconUuid
         let marketid = venue[0].marketid
         let marketstamp = Date.now()
         // updates doc but returns the pre-updated one - with marketstamp reflecting time of last detected signal
-        db.collection(authCollection)
-            .findOneAndUpdate({uuid: signalUUID }, {$set: {marketid: marketid, marketstamp: marketstamp}, $inc: {marketnotices: 1}})
-            .then((result) => {               
-                if (result.value) {                    
-                    resolve([result.value])
-                } else {
-                    resolve([])
-                }
+        let result = await Subscriber.findOneAndUpdate({uuid: signalUUID }, {$set: {marketid: marketid, marketstamp: marketstamp}, $inc: {marketnotices: 1}})
+                         
+        if (result.value) {                    
+            resolve([result.value])
+        } else {
+            resolve([])
+        }                
                 
-            })
-            .catch(err => reject(err))      
     })
 }
 
-// find active product tags for a specific venue
-const findActiveTags = (parm) => {
-    return new Promise(async (resolve, reject) => {  
-        const db = await conn(proximityurl, proximityDb)      
-
-        db.collection(proximityActiveTags)
-            .find(parm)
-            .toArray()
-            .then((result) => {                 
-                resolve(result)
-            })
-            .catch(err => reject(err))       
-    })
-}
 
 // select a sample of stores
 const fetchStoreSample = ( ) => {
     return new Promise(async (resolve, reject) => {  
-        const db = await conn(proximityurl, proximityDb)      
-
-        db.collection('venues')
-            .find({market: {$in: ['Grocery Stores', 'Supermarkets']}})
-            .toArray()
-            .then(data => {
-              let newarray = data.map(d => d.marketid)
-              resolve(newarray) 
-            })  
+        let db = await conn(url)		
+		let Venue = db.model('Venue', venueSchema)
+        let result = await Venue.find({market: {$in: ['Grocery Stores', 'Supermarkets']}}).lean()
+        let newarray = result.map(d => d.marketid)
+        resolve(newarray)            
     })
 }
 
 // select a sample of product tags
 const fetchTagSample = () => {
     return new Promise(async (resolve, reject) => {  
-        const db = await conn(proximityurl, proximityDb)      
+        let db = await conn(url)		
+		let Tag = db.model('Tag', tagSchema)     
 
-        db.collection('tags')
-        .aggregate([{$sample: {size: 1000}}])
-        .toArray()
-        .then(data => {      
-         resolve(data)
-        })
+        let data = await Tag.aggregate([{$sample: {size: 1000}}]).lean()
+        resolve(data)
     })
 }
 
-// select a sample of product tags
+// select a sample of subscribers
 const fetchSubscribers = () => {
     return new Promise(async (resolve, reject) => {  
-        const db = await conn(proximityurl, proximityDb)      
+        let db = await conn(url)		
+		let Subscriber = db.model('Subscriber', subscriberSchema)  
 
-        db.collection('subscribers')
-        .aggregate([{$sample: {size: 5000}}])
-        .toArray()
-        .then(data => {      
-          resolve(data)
-        })
+        let data = await Subscriber.collection('subscribers')
+        .aggregate([{$sample: {size: 5000}}]).lean()
+        resolve(data)
     })
 }
 
 module.exports = {    
     findVenue,
-    findSubscriberAndUpdate,
-    findActiveTags,
+    findSubscriberAndUpdate,   
     fetchStoreSample,
     fetchTagSample,
     fetchSubscribers
