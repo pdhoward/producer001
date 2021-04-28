@@ -23,6 +23,7 @@ module.exports = signal = (router) => {
     let id = undefined
     let x = 0
     let y = 0
+    let toggle = false
     
     const randomStream = (int) => {
       
@@ -81,10 +82,11 @@ module.exports = signal = (router) => {
 
     // Function to start generating random product signals for x number of Venues
 
-    if (id) {      
+    if (toggle) {      
       clearInterval(id)
-      id = undefined
+      toggle = false
     } else {
+      toggle = true
       randomStream(2000) 
     }
        
