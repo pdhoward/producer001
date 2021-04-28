@@ -12,19 +12,21 @@ const plans = ['Platinum', 'Gold', 'Silver', 'Bronze', 'Basic']
 let producer = {}
 
 const init = async () => {
-  producer = await kafkaproducer()    
+  producer = await kafkaproducer() 
 }
 
 init()
 
 module.exports = signal = (router) => {
 	router.use(async(req, res, next) => { 
+
+    let id = undefined
+    let x = 0
+    let y = 0
     
     const randomStream = (int) => {
-      let id
-      let x = 0
-      let y = 0
-      id = setInterval(async function() {          
+      
+      id = setInterval(async function() {     
         
         let tag = await fetchRandomTag()  
         let brand = brands[Math.floor(Math.random() * brands.length)]  
@@ -78,7 +80,14 @@ module.exports = signal = (router) => {
     res.status(200).redirect('/')
 
     // Function to start generating random product signals for x number of Venues
-    randomStream(2000)   
+
+    if (id) {      
+      clearInterval(id)
+      id = undefined
+    } else {
+      randomStream(2000) 
+    }
+       
 
     next()
   })  
