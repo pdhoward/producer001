@@ -2,7 +2,6 @@ const {conn} =              require('../db')
 const subscriberSchema = 	require('../models/Subscriber.js')
 const tagSchema = 	        require('../models/Tag.js')
 const venueSchema = 	    require('../models/Venue.js')
-const brandSchema =         require('../models/Brand.js')
 const { g, b, gr, r, y } =  require('../console')
 
 ///////////////////////////////////
@@ -23,16 +22,6 @@ const findVenue = (venue) => {
         let token = venue       
         let doc = await Venue.findOne({monitors: token }).lean()                   
         resolve(doc)      
-    })
-}
-
-const fetchBrand = (brand) => {
-    return new Promise(async (resolve, reject) => {      
-		let db = await conn(url)		
-		let Brand = db.model('Brand', brandSchema)
-        let id = brand      
-        let doc = await Brand.findOne({brandid: id }).lean()                   
-        resolve(doc) 
     })
 }
 
@@ -89,36 +78,11 @@ const fetchSubscribers = () => {
     })
 }
 
-
-// return a random product tag - returns a lean array
-const fetchRandomTag = () => {
-    return new Promise(async (resolve, reject) => {  
-        let db = await conn(url)		
-		let Tag = db.model('Tag', tagSchema)     
-
-        let data = await Tag.aggregate([{$sample: {size: 1}}])
-        resolve(data)
-    })
-}
-
-// select a sample of subscribers
-const fetchRandomSubscriber = () => {
-    return new Promise(async (resolve, reject) => {  
-        let db = await conn(url)		
-		let Subscriber = db.model('Subscriber', subscriberSchema)  
-
-        let data = await Subscriber.aggregate([{$sample: {size: 1}}])
-        resolve(data)
-    })
-}
 module.exports = {    
     findVenue,
-    fetchBrand,
     findSubscriberAndUpdate,   
     fetchStoreSample,
     fetchTagSample,
-    fetchSubscribers,
-    fetchRandomTag,
-    fetchRandomSubscriber
+    fetchSubscribers
 }
 

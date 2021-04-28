@@ -36,9 +36,6 @@ const addMessage = (message) => {
     } else {
         generateTable(message)
     }
-    // const pTag = document.createElement('p');
-    // pTag.appendChild(document.createTextNode(message));
-    // getElement('messages').appendChild(pTag);
 };
 
 const connect = () => {
@@ -71,9 +68,8 @@ const onMessage = (evt) => {
     const arr = JSON.parse(evt.data);
     let messages = arr.map(a => {
         let obj = {}
-        obj.tagid = a.tagid
-        obj.name = a.name 
-        obj.price = a.price 
+        obj.type = a.type
+        obj.name = a.name       
         obj.seq = a.seq
         obj.date = new Date(a.updatedOn).toLocaleString()
         return obj
