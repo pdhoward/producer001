@@ -4,10 +4,8 @@ let websocket;
 
 // <input onclick="change()" type="button" value="Open Curtain" id="myButton1"></input>
 const change = () => {
-    fetch('http://localhost:5000/api/signals')
-        .then(response => response.json())
-        .then(data => console.log(data));
-    var elem = document.getElementById("jsbutton");
+    fetch('http://localhost:5000/api/signals')        
+    let elem = document.getElementById("jsbutton");
     if (elem.value=="Stop Kafka") {
      elem.value = "Start Kafka"
      elem.className="btn btn-lg btn-success"
