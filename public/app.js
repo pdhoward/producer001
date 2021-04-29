@@ -4,7 +4,8 @@ let websocket;
 
 // <input onclick="change()" type="button" value="Open Curtain" id="myButton1"></input>
 const change = () => {
-    fetch('http://localhost:5000/api/signals')        
+    //fetch('http://localhost:5000/api/signals') 
+    fetch(`http://${location.host}${'/api/signals'}`)       
     let elem = document.getElementById("jsbutton");
     if (elem.value=="Stop Kafka") {
      elem.value = "Start Kafka"
@@ -56,7 +57,7 @@ const connect = () => {
     //open socket
     if ("WebSocket" in window){
         output.innerHTML = "CONNECTING..." ;
-        ws = new WebSocket(`ws://${location.host}`); 
+        ws = new WebSocket(`wss://${location.host}`); 
    
         ws.onopen = onOpen;
         ws.onclose = onClose;
