@@ -9,6 +9,9 @@ const { g, b, gr, r, y } =        require('../console')
 
 const plans = ['Platinum', 'Gold', 'Silver', 'Bronze', 'Basic']
 
+let toggle = false
+let id = {}
+
 let producer = {}
 
 const init = async () => {
@@ -19,11 +22,9 @@ init()
 
 module.exports = signal = (router) => {
 	router.use(async(req, res, next) => { 
-
-    let id = undefined
+    
     let x = 0
-    let y = 0
-    let toggle = false
+    let y = 0   
     
     const randomStream = (int) => {
       
@@ -78,16 +79,17 @@ module.exports = signal = (router) => {
       }, int)
     }   
      
-    res.status(200).redirect('/')
-
-    // Function to start generating random product signals for x number of Venues
+  // Function to start generating random product signals for x number of Venues
 
     if (toggle) {      
       clearInterval(id)
       toggle = false
+      id = {}
+      res.status(200).redirect('/')
     } else {
       toggle = true
       randomStream(2000) 
+      res.status(200).redirect('/')
     }
        
 

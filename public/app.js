@@ -1,6 +1,14 @@
 
 let output;
 let websocket;
+
+// <input onclick="change()" type="button" value="Open Curtain" id="myButton1"></input>
+const change = () => {
+    var elem = document.getElementById("myButton1");
+    if (elem.value=="Stop Kafka Stream") elem.value = "Start Kafka Stream";
+    else elem.value = "Stop Kafka Stream";
+}
+
 const setbg = (color) => {
     document.getElementById("message").style.background=color
     }
