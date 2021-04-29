@@ -36,7 +36,7 @@ module.exports = (url, dbName) => {
 
       // if connection is in cache, will reuse it, otherwise create it
       if (conn) {
-        log.info('Reusing existing MongoDB connection')             
+        //log.info('Reusing existing MongoDB connection')             
         resolve(conn)                 
       }
       else {

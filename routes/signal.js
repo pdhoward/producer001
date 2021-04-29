@@ -24,7 +24,7 @@ module.exports = signal = (router) => {
 	router.use(async(req, res, next) => { 
     
     let x = 0
-    let y = 0   
+    let y = 2   
     
     const randomStream = (int) => {
       
@@ -49,7 +49,7 @@ module.exports = signal = (router) => {
          // kafka producer - 
          try {
             let result = await kafka(producer, tag)          
-            console.log(result, x)
+            //console.log(result, x)
           } catch (e) {
             console.log(e)
           }
@@ -70,7 +70,7 @@ module.exports = signal = (router) => {
          // kafka producer - 
          try {
             let result = await kafka(producer, subscriber)          
-            console.log(result, y)
+           
           } catch (e) {
             console.log(e)
           }
