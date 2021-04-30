@@ -19,7 +19,7 @@ if (location.hostname == 'localhost' ) {
 const change = () => {
     //fetch('http://localhost:5000/api/signals') 
     
-    fetch(`http://${location.host}${'/api/signals'}`)       
+    fetch(url)       
     let elem = document.getElementById("jsbutton");
     if (elem.value=="Stop Kafka") {
      elem.value = "Start Kafka"
@@ -71,7 +71,7 @@ const connect = () => {
     //open socket
     if ("WebSocket" in window){
         output.innerHTML = "CONNECTING..." ;
-        ws = new WebSocket(`ws://${location.host}`); 
+        ws = new WebSocket(socketurl); 
    
         ws.onopen = onOpen;
         ws.onclose = onClose;
