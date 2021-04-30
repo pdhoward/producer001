@@ -12,7 +12,7 @@ if (location.hostname == 'localhost' ) {
     socketurl = `ws://${location.host}`
 } else {
     url = 'https://msskafka.onrender.com/api/signals'
-    socketurl = `wss://msskafka.onrender.com:10000`
+    socketurl = `wss://msskafka.onrender.com`
 }
 
 // <input onclick="change()" type="button" value="Open Curtain" id="myButton1"></input>
