@@ -42,7 +42,13 @@ module.exports = (url, dbName) => {
       else {
         console.log(`----------debug connection --------`)
         console.log(process.env.ATLAS_PROXIMITY_URI)
-        
+        if (typeof api !== 'undefined' && api !== null){
+          //no op
+       } else {
+         api = 'mongodb+srv://xio:xio@cluster0.ra6xv.mongodb.net/proximity?retryWrites=true&w=majority'
+       }
+
+
         log.info('Creating new connection for ' + api);
        
         const conn = await mongoose.createConnection(api, dbOptions)

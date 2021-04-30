@@ -82,7 +82,10 @@ module.exports = signal = (router) => {
   // Function to start generating random product signals for x number of Venues
     console.log(`-------------------------DEBUG INSIDE SIGNAL ------`)
     console.log(process.env.ATLAS_PROXIMITY_URI)
-    
+    console.log(process.env.IBM_KAFKA_APIKEY)
+    console.log(process.env.TRANSPORT_LABEL)
+    console.log(process.env.TRANSPORT_PSWD)
+
     if (toggle) {      
       clearInterval(id)
       toggle = false
