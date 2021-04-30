@@ -29,17 +29,20 @@
         "sasl.mechanism":"PLAIN",  
         "broker.version.fallback": "0.10.0"
         });
+
     producer.on("ready", function () {
-    console.log(b("Producer ready"))
+      console.log(b("Producer ready"))
     });
     
     producer.on("event.error", function (err) {
-    console.log("Error from Producer");
-    console.log(err);
+      console.log("Error from Producer");
+      console.log(err);
     });
+
     producer.connect(null, (err, metadata) => {
-    console.log(g("Producer Connected"))
-    resolve({producer})
+      console.log(g("Producer Connected"))
+      resolve({producer})
     })
+
   })
  }
