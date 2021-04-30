@@ -5,14 +5,12 @@
 const WebSocket =               require('ws')
 const {kafka} =                 require('./kafka')
 const {socketevents} =          require('./sockets')
-//const {dbevents} =              require('./db')
 const { g, b, gr, r, y } =      require('../console');
 
 const wss = new WebSocket.Server({noServer: true });
 
 const register = (socket, wss) => {    
-  socketevents(socket, wss)  
-  //dbevents()
+  socketevents(socket, wss) 
 }
 
 wss.on("connection", (socket, req) => {

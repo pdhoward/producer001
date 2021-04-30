@@ -40,6 +40,9 @@ module.exports = (url, dbName) => {
         resolve(conn)                 
       }
       else {
+        console.log(`----------debug connection --------`)
+        console.log(process.env.ATLAS_PROXIMITY_URI)
+        
         log.info('Creating new connection for ' + api);
        
         const conn = await mongoose.createConnection(api, dbOptions)

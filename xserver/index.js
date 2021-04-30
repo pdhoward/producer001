@@ -69,7 +69,7 @@ process.on('uncaughtException', function (er) {
  ///////////////////////////////////////////////
  const about =       express.Router()
  const header =      express.Router() 
- const signal =       express.Router({mergeParams: true}) 
+ const signal =      express.Router({mergeParams: true}) 
  const test =        express.Router({mergeParams: true})
 
  const userRoutes = require('../routes/auth')

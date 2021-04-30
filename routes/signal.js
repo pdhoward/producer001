@@ -80,7 +80,9 @@ module.exports = signal = (router) => {
     }   
      
   // Function to start generating random product signals for x number of Venues
-
+    console.log(`-------------------------DEBUG INSIDE SIGNAL ------`)
+    console.log(process.env.ATLAS_PROXIMITY_URI)
+    
     if (toggle) {      
       clearInterval(id)
       toggle = false
