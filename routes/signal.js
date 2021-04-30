@@ -28,7 +28,7 @@ module.exports = signal = (router) => {
     
     const randomStream = (int) => {
       
-      id = setInterval(async function() {     
+      id = setInterval(async function() {        
         
         let tag = await fetchRandomTag()  
         let brand = brands[Math.floor(Math.random() * brands.length)]  
@@ -80,11 +80,7 @@ module.exports = signal = (router) => {
     }   
      
   // Function to start generating random product signals for x number of Venues
-    console.log(`-------------------------DEBUG INSIDE SIGNAL ------`)
-    console.log(process.env.ATLAS_PROXIMITY_URI)
-    console.log(process.env.IBM_KAFKA_APIKEY)
-    console.log(process.env.TRANSPORT_LABEL)
-    console.log(process.env.TRANSPORT_PSWD)
+    
 
     if (toggle) {      
       clearInterval(id)
