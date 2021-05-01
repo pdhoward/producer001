@@ -14,17 +14,21 @@ let id = {}
 
 let producer = {}
 
+/////////////////////////////////////////////
+//////////   initialize producer ///////////
+///////////////////////////////////////////
 const init = async () => {
   producer = await kafkaproducer() 
 }
 
 init()
+//////////////////////////////////////////
 
 module.exports = signal = (router) => {
 	router.use(async(req, res, next) => { 
     
     let x = 0
-    let y = 2   
+    let y = 2     
     
     const randomStream = (int) => {
       
@@ -80,17 +84,36 @@ module.exports = signal = (router) => {
     }   
      
   // Function to start generating random product signals for x number of Venues
-    
-
     if (toggle) {      
-      clearInterval(id)
+      clearInterval(id)      
       toggle = false
+      // let client know that streaming has stopped
+      let status = [{
+        type: 'status',
+        state: false
+      }]
+      wss.clients.forEach((client) => {      
+        if (client.readyState === 1) {
+            client.send(JSON.stringify(status))
+        }
+      })
+
       id = {}
-      res.status(200).redirect('/')
+      res.status(200).end()
     } else {
       toggle = true
+      let status = [{
+        type: 'status',
+        state: true
+      }]
+      wss.clients.forEach((client) => {      
+        if (client.readyState === 1) {
+            client.send(JSON.stringify(status))
+        }
+      })
+
       randomStream(2000) 
-      res.status(200).redirect('/')
+      res.status(200).end()
     }
        
 

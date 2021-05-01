@@ -22,7 +22,12 @@ const PORT = process.env.PORT || 5000;
 app.use(cors())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use('/', express.static(path.join(__dirname, '../public')))
+//app.use('/', express.static(path.join(__dirname, '../public')))
+
+// Serve up static assets (usually on heroku)
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
 
 const isDev = (app.get('env') === 'development');
 console.log('isDev: ' + isDev);
@@ -38,6 +43,19 @@ server.on('upgrade', (request, socket, head) => {
         wss.emit('connection', socket, request);
     });     
 })
+
+// status of streaming service
+let toggle = {
+  state: false
+}
+const toggleState = (req, res, next) => { 
+  if (toggle.state) {
+    toggle.state = false
+  } else {
+    toggle.state = true
+  }
+  next()
+}
 
 /////////////////////////////////////////
 ///// alerts for platform errors ///////
@@ -85,6 +103,10 @@ process.on('uncaughtException', function (er) {
 
 app.use(header)
 app.get('/about', about)
+app.get('/api/toggle', (req, res, next) => { 
+  res.json(toggle)
+  next()
+})
 
 ////////////////////////////////////////////////////////
 //////////       api routes - streaming       /////////
@@ -92,7 +114,7 @@ app.get('/about', about)
 
 app.use("/api/auth", [userRoutes])
 
-app.use('/api/signals', [signal])
+app.use('/api/signals', [toggleState, signal])
 
 ///////////////////////////////////
 ///////     active servers ///////
